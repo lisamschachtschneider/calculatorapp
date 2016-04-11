@@ -54,11 +54,11 @@
 		C291134A1CBC309500799366 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				C291134B1CBC309500799366 /* AppDelegate.swift */,
 				C291134D1CBC309500799366 /* ViewController.swift */,
 				C291134F1CBC309500799366 /* Main.storyboard */,
 				C29113521CBC309500799366 /* Assets.xcassets */,
 				C29113541CBC309500799366 /* LaunchScreen.storyboard */,
+				C291134B1CBC309500799366 /* AppDelegate.swift */,
 				C29113571CBC309500799366 /* Info.plist */,
 			);
 			path = Calculator;
