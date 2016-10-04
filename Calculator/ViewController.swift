@@ -14,7 +14,7 @@ class ViewController: UIViewController
     @IBOutlet weak var display: UILabel!
     var userIsInTheMiddleOfTypingANumber = false
     
-    @IBAction func appendDigitToTitleAndDisplay(sender: UIButton) {
+    @IBAction func appendDigit(sender: UIButton) {
         // ! makes it NOT an optional,
         // By declaring the ! you unwrap the string in the optional and makes it revealed, otherwise if you printed digit when let digit=sender.currentTitle it would return digit=Optional("2") so by declaring it as a string with the symbolic ! it will only return the value of the string
         //  sender is the UIButton, so the currentTitle of the UIButton object which inherits from the UIButton class.
@@ -31,28 +31,57 @@ class ViewController: UIViewController
         }
     }
     
-    // initializing the operandStack (as a function) that will be an array that will be composed of doubles
-    var operandStack = Array<Double>()
+
+    @IBAction func appendDecimal(sender: UIButton) {
+        let decimal = sender.currentTitle!
+
+        if userIsInTheMiddleOfTypingANumber {
+            display.text = display.text! + decimal
+        } else {
+            display.text = decimal
+            userIsInTheMiddleOfTypingANumber = true
+        }
+    }
     
     // checks whichOperation is used
-    @IBAction func whichOperation(sender: UIButton) {
+    @IBAction func operate(sender: UIButton) {
         // we are always checking the currentTitle for the operation
-        let whichOperation = sender.currentTitle!
+        let operation = sender.currentTitle!
         
         if userIsInTheMiddleOfTypingANumber {
             // append the displayValue to the operandStack when enter is pressed
             enter()
         }
         
-        switch whichOperation {
+        switch operation {
         case "✖️": performTheSelectedOperation { $0 * $1 }
         case "➗": performTheSelectedOperation { $1 / $0 }
         case "➕": performTheSelectedOperation { $0 + $1 }
         case "➖": performTheSelectedOperation { $1 - $0 }
-        // case "√": performOperation{ sqrt($0)}
+        case "√" : performTheSelectedOperation { sqrt($0) }
+        case "sin": performTheSelectedOperation { sin($0) }
+        case "cos": performTheSelectedOperation { cos($0) }
+//        case "∏": performTheSelectedOperation {  }
         default: break
         }
     }
+    
+    func performTheSelectedOperation(operation:(Double, Double) -> Double){
+        if operandStack.count >= 2 {
+            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+            enter()
+        }
+    }
+    
+    private func performTheSelectedOperation(operation:Double -> Double){
+        if operandStack.count >= 1 {
+            displayValue = operation(operandStack.removeLast())
+            enter()
+        }
+    }
+    
+    // initializing the operandStack (as a function) that will be an array that will be composed of doubles
+    var operandStack = Array<Double>()
     
     @IBAction func enter() {
         
@@ -63,13 +92,6 @@ class ViewController: UIViewController
         operandStack.append(displayValue)
         
         // print("operandStack = \(operandStack)")
-    }
-    
-    func performTheSelectedOperation(operation:(Double, Double) -> Double){
-        if operandStack.count >= 2 {
-            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
-            enter()
-        }
     }
     
     var displayValue: Double {
